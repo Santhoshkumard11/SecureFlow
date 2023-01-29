@@ -1,24 +1,19 @@
 import logging
 
 import azure.functions as func
+from executor import Executor
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('Python HTTP trigger function processed a request.')
+    logging.info("Python HTTP trigger function processed a request.")
 
-    name = req.params.get('name')
-    if not name:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
-        else:
-            name = req_body.get('name')
+    try:
+        executor_obj = Executor()
+        executor_obj.execute()
 
-    if name:
-        return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
-    else:
+    except Exception as e:
+        logging.exception(f"An error occurred - {e}")
         return func.HttpResponse(
-             "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
-             status_code=200
+            "This HTTP triggered function executed successfully. But an internal error occurred, check Application logs.",
+            status_code=200,
         )
