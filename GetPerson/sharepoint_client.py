@@ -1,4 +1,3 @@
-import logging
 import os
 from GetPerson.constants import SHAREPOINT_URLS
 from GetPerson.microsoft_graph_api import GraphClient
@@ -26,8 +25,4 @@ class SharePointClient:
             **{"site_id": self.site_id, "list_id": self.list_id}
         )
 
-        graph_result = self.msft_graph_client.send_msft_graph_request(url)
-
-        logging.info(graph_result)
-
-        return graph_result
+        return self.msft_graph_client.send_msft_graph_request(url)

@@ -1,7 +1,9 @@
 import logging
 
 import azure.functions as func
-from executor import Executor
+import json
+
+from GetPerson.executor import Executor
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
@@ -9,7 +11,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     try:
         executor_obj = Executor()
-        executor_obj.execute()
+        person_email = executor_obj.execute()
+
+        return func.HttpResponse(
+            json.dumps({"email": person_email}),
+            status_code=200,
+        )
 
     except Exception as e:
         logging.exception(f"An error occurred - {e}")
